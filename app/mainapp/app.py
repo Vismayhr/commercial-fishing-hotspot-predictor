@@ -65,7 +65,11 @@ def home(year='2015', week='1'):
 	# Update the df with the year and week input by the user
 	data.update_df_with_user_input(user_input)
 
-	print(f"The updated df is {data.X_test.head()}", flush=True)
+	print(f"The updated df:\n{data.X_test.head()}", flush=True)
+
+	data.perform_feature_encoding()
+
+	print(f"The df after feature encoding:\n{data.X_test.head()}", flush=True)	
 
 
 	return render_template('index.html')

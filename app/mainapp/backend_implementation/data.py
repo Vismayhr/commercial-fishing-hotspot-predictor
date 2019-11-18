@@ -4,7 +4,7 @@ import logging
 import pandas as pd
 from .filepaths import full_dataset_filepath
 from .canadas_coordinates import *
-from .dataset_columns import *
+from .dataset_meta_data import *
 from .polygon_grid import PolygonGrid
 import datetime
 
@@ -34,5 +34,28 @@ class Data():
 		self.X_test['year'] = user_input.year
 		self.X_test['week'] = user_input.week
 
+	def perform_feature_encoding(self):
+		# One Hot Encode the year values (2012 - 2017)
+		self.one_hot_encode_year()
 
+		# Do Sin, Cos encoding for week as it is a cyclic value
+		max_week = np.max(self.X_test['week'])
+		self.encode_cyclic_values(max_week, 'week')
+
+	def one_hot_encode_year(self):
+		# Create columns for the possible years
+		for year in valid_years:
+			if(year == self.X_test['year'][0]):
+				self.X_test[year] = 1
+			else:
+				self.X_test[year] = 0
+
+	def encode_cyclic_values(self, max_val, col_name):
+		# Sine transformation
+		self.X_test['week_sin'] = 2 * np.pi * self.X_test['week'] / max_val
+		self.X_test['week_sin'] = np.sin(self.X_test['week_sin'])
+
+	    # Cos transformation
+		self.X_test['week_cos'] = 2 * np.pi * self.X_test['week'] / max_val
+		self.X_test['week_cos'] = np.cos(self.X_test['week_cos'])
 
