@@ -1,6 +1,16 @@
 from flask import Flask, render_template, request, redirect, url_for, jsonify
 from flask_cors import CORS
 import os
+import pandas as pd
+import pickle
+from backend_implementation.filepaths import full_dataset_filepath, trained_model_filepath
+from backend_implementation.data import Data
+from backend_implementation.user_input import UserInput
+
+
+# Create global variables used throughout the life of the application
+data = None
+trained_model = None
 
 app = Flask(__name__, static_url_path='')
 CORS(app)
@@ -8,8 +18,17 @@ CORS(app)
 # Load the datasets before the very first user request and have it available during the entire lifespan of the application.
 # Hence, time taken for file I/O is reduced as the csv files (i.e datasets) are only read once and not for every user request.
 @app.before_first_request
-def load_datasets():
-	pass
+def setup():
+	print(f"Setting up the server....")
+	print(f"Loading the dataset from: {full_dataset_filepath}", flush=True)
+	global data
+	data = Data()
+	print(f"Shape of the dataset is: {data.dataset.shape}", flush=True)
+	
+	print(f"Loading the trained model from: {trained_model_filepath}", flush=True)
+	global trained_model
+	trained_model = pickle.load(open(trained_model_filepath, 'rb'))
+	print("Server setup complete. Server can handle user requests now...", flush=True)
 
 
 @app.route('/init', methods=['GET'])
@@ -28,11 +47,28 @@ def server_error(error):
 
 @app.route('/')
 def go_home():
-	return render_template('index.html')
+	return redirect(url_for('home'))
 
-@app.route('/av', methods=['POST', 'GET'])
-def home(day='01', hour='01', dataset='full'): 
-	pass
+@app.route('/fishing-vessel-presence', methods=['POST', 'GET'])
+def home(year='2015', week='1'): 
+	if request.method == 'POST':
+		form_values = request.form.to_dict()
+		year = form_values['year']
+		week = form_values['week']
+		print(f"POST request received. year: {year} and week: {week}", flush=True)
+	else:
+		print(f"GET request received. Using default values: {year} {week}", flush=True)
+
+	# Store the user input
+	user_input = UserInput(year, week)
+
+	# Update the df with the year and week input by the user
+	data.update_df_with_user_input(user_input)
+
+	print(f"The updated df is {data.X_test.head()}", flush=True)
+
+
+	return render_template('index.html')
 
 @app.route('/handle_input', methods=['POST'])
 def handle_input():
