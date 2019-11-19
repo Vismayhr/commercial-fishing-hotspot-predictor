@@ -82,18 +82,18 @@ class Data():
 		response['week'] = week
 		response['data'] = []
 		for index, row in query_result.iterrows():
-			print(f"Currently serving index: {index}" , flush=True)
+			print(f"Currently serving Polygon: {query_result['polygon_id']}" , flush=True)
 			data = {}
 			data['lat1'] = row['polygon_south_latitude']
 			data['lon1'] = row['polygon_west_longitude']
 
 			data['lat2'] = row['polygon_south_latitude']
-			data['lon2'] = row['polygon_west_longitude'] + 0.5
+			data['lon2'] = row['polygon_west_longitude'] + 1.0
 
-			data['lat3'] = row['polygon_south_latitude'] + 0.5
-			data['lon3'] = row['polygon_west_longitude'] + 0.5
+			data['lat3'] = row['polygon_south_latitude'] + 1.0
+			data['lon3'] = row['polygon_west_longitude'] + 1.0
 
-			data['lat4'] = row['polygon_south_latitude'] + 0.5
+			data['lat4'] = row['polygon_south_latitude'] + 1.0
 			data['lon4'] = row['polygon_west_longitude']
 
 			if(row['polygon_id'] in self.unvisited_polygons):

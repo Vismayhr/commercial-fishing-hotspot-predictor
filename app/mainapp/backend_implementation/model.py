@@ -22,6 +22,7 @@ class Model():
 		self.predictions['week'] = week
 		self.predictions['result'] = []
 		for polygon in data.polygon_grid.polygons:
+			#print(f"Serving polygon {polygon['polygon_id']}", flush=True)
 			result = {}
 			result['lat1'] = polygon['bottom_edge']
 			result['lon1'] = polygon['left_edge']
