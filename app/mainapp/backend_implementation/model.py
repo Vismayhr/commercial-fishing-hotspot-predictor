@@ -8,9 +8,9 @@ from .dataset_meta_data import columns_used_for_model_training
 
 class Model():
 	def __init__(self):
-		print(f"Loading the trained model from: {trained_model_filepath}", flush=True)
 		self.model = self.load_model_from_file()
 		self.predictions = {}
+		print(f"Loaded the trained model...", flush=True)
 
 	def load_model_from_file(self):
 		model = pickle.load(open(trained_model_filepath, 'rb'))

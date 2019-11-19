@@ -26,7 +26,7 @@ class PolygonGrid():
 		        polygon['right_edge'] = r
 		        west_polygon_list.append(polygon)
 		        p_id += 1
-		print(f"West polygon[-1]: {west_polygon_list[-1]}")
+		#print(f"West polygon[-1]: {west_polygon_list[-1]}")
 				
 		## East coast grid box: polygons on to bin the coordinates on the east coast of Canada
 		east_lat_grid = np.linspace(east_coast_grid_southern_latitude, east_coast_grid_northern_latitude, ((east_coast_grid_northern_latitude-east_coast_grid_southern_latitude)), endpoint=False)
@@ -47,7 +47,7 @@ class PolygonGrid():
 		        polygon['right_edge'] = r
 		        east_polygon_list.append(polygon)
 		        p_id += 1
-		print(f"East polygon[-1]: {east_polygon_list[-1]}")
+		#print(f"East polygon[-1]: {east_polygon_list[-1]}")
 
 		# Join the two lists and return them
 		return(west_polygon_list + east_polygon_list)
