@@ -21,7 +21,6 @@ def setup():
 	print(f"Setting up the server....")
 	global data
 	data = Data()
-	print(f"Shape of the dataset is: {data.dataset.shape}", flush=True)
 	
 	global trained_model
 	trained_model = Model()
@@ -47,15 +46,14 @@ def go_home():
 	return redirect(url_for('home'))
 
 @app.route('/fishing-vessel-presence', methods=['POST', 'GET'])
-def home(year='2015.0', week='1'): 
+def home(year='2016.0', week='35'): 
 	if request.method == 'POST':
 		form_values = request.form.to_dict()
-		print(f"FORM VALUES ARE: {form_values}", flush=True)
 		year = form_values['predict_year']
 		week = form_values['predict_week']
-		print(f"POST request received. year: {year} and week: {week}", flush=True)
+		print(f"POST request received for prediction. year: {year} and week: {week}", flush=True)
 	else:
-		print(f"GET request received. Using default values: {year} {week}", flush=True)
+		print(f"GET request received for prediction. Using default values: {year} {week}", flush=True)
 
 	# Store the user input
 	user_input = UserInput(year, week)
@@ -78,7 +76,7 @@ def visualise_past_data(year='2015.0', week='1'):
 		form_values = request.form.to_dict()
 		year = form_values['past_year']
 		week = form_values['past_week']
-		print(f"POST request received for PAST DATA. year: {year} and week: {week}", flush=True)	
+		print(f"POST request received for past data. year: {year} and week: {week}", flush=True)
 	
 	year = float(year)
 	week = float(week)

@@ -11,15 +11,15 @@ import pickle
 
 class Data():
 	def __init__(self):
-		print(f"Loading the dataset from: {full_dataset_filepath}", flush=True)
 		self.dataset = pd.read_csv(full_dataset_filepath, header=0)
 		self.polygon_grid = PolygonGrid()
 		self.X_test = self.create_empty_df()
 		self.unvisited_polygons = self.get_unvisited_polygon_data()
+		print(f"Loaded the dataset and other required data...", flush=True)
 
 
 	def create_empty_df(self):
-		print(f"Creating the DataFrame X_test...", flush=True)
+		print(f"Creating an empty DataFrame to store the results...", flush=True)
 		cols = self.dataset.columns.tolist()
 		# Drop the vessels_count column as it corresponds to the target column
 		cols.remove('vessel_count')
@@ -40,8 +40,8 @@ class Data():
 
 
 	def perform_feature_encoding(self):
+		print(f"Repeating the feature engineering steps done on the train dataset...")
 		# One Hot Encode the year values (2012 - 2017)
-		
 		self.one_hot_encode_year()
 
 		# Do Sin, Cos encoding for week as it is a cyclic value
@@ -50,18 +50,17 @@ class Data():
 
 
 	def one_hot_encode_year(self):
-		print(f"Starting OHE!", flush=True)
+		print(f"1) One hot encoding of year column", flush=True)
 		# Create columns for the possible years
 		for year in valid_years:
 			if(year == self.X_test['year'][0]):
 				self.X_test[year] = 1
 			else:
 				self.X_test[year] = 0
-		print(f"One hot encoding complete", flush=True)
 
 
 	def encode_cyclic_values(self, max_val, col_name):
-		print(f"Type of week is {type(self.X_test['week'][0])}", flush=True)
+		print(f"2) Sin and cos encoding for week values...", flush=True)
 
 		# Sine transformation
 		self.X_test['week_sin'] = np.sin(2 * np.pi * self.X_test['week'] / max_val)
@@ -81,8 +80,9 @@ class Data():
 		response['year'] = year
 		response['week'] = week
 		response['result'] = []
+		start_time = datetime.datetime.now()
+		print(f"Querying data for each polygon on the map...", flush=True)
 		for index, row in query_result.iterrows():
-			print(f"Currently serving Polygon: {row['polygon_id']}" , flush=True)
 			data = {}
 			data['lat1'] = row['polygon_south_latitude']
 			data['lon1'] = row['polygon_west_longitude']
@@ -110,5 +110,6 @@ class Data():
 				data['dec'] = round(np.average(self.dataset[(self.dataset['year']==year) & (self.dataset['week'].between(49,53)) & (self.dataset['polygon_id']==row['polygon_id'])]['vessel_count']))
 
 			response['result'].append(data)
-		print(f"ALL POLYGONS DONE!", flush=True)
+		end_time = datetime.datetime.now()
+		print(f"Serving {row['polygon_id']} polygons took {(end_time - start_time).total_seconds()} seconds...", flush=True)
 		return response
