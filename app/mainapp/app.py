@@ -69,7 +69,7 @@ def home(year='2015.0', week='1'):
 	# Make the predictions
 	predictions = trained_model.make_predictions(data, year, week)
 
-	return render_template('index.html', data=predictions)
+	return render_template('predictions.html', data=predictions)
 
 @app.route('/visualise_past_data', methods=['POST', 'GET'])
 def visualise_past_data(year='2015.0', week='1'):
