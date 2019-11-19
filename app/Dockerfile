@@ -7,7 +7,7 @@ RUN apt-get install -y python3 python3-dev python3-pip
 RUN pip3 install flask flask-cors uwsgi
 
 # Install python packages required to build the model (numpy, pykrige, etc)
-RUN pip3 install numpy scipy matplotlib pandas
+RUN pip3 install numpy scipy matplotlib pandas sklearn xgboost
 
 # Copy the files of the application into the work space of the container
 COPY ./ ./app

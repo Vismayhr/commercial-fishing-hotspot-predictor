@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset='UTF-8'>
+	<title>Commercial Fishing Hotspot Predictor</title>
+	<link rel='stylesheet' type='text/css' href='{{ url_for('static',filename='styles/main-page.css') }}'>
+</head>
+	<body>
+
+		<h1>Past data visualisation</h1>
+		<script type="text/javascript">
+
+			var v1 = {{ data.year | tojson | safe }};
+			var v2 = {{ data.week | tojson | safe }};
+			var v3 = {{ data.result[0]['lat1'] | tojson | safe }};
+			var v4 = {{ data.result[0]['lon1'] | tojson | safe }};
+			var v5 = {{ data.result[0]['value'] | tojson | safe }};
+			var v5 = {{ data.result[0]['jan'] | tojson | safe }};
+			console.log("Past Year: " +  v1);
+			console.log("Past Week: " +  v2);
+			console.log("Past Lat1: " +  v3);
+			console.log("Past Lon1: " +  v4);
+			console.log("Past Prediction: " +  v5);
+			console.log("Past Jan" + v6)
+
+		</script>		
+		<form action="{{ url_for('visualise_past_data') }}" method="post">
+			Year:<br>
+			<input type="text" name="past_year" id="past_year"></input><br>
+			Week:<br>
+			<input type="text" name="past_week" id="past_week"></input><br>
+			<input type="Submit" name="submitBtn"></input>
+		</form>		
+
+
+	</body>
+
+</html>

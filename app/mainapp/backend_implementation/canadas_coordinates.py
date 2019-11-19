@@ -1,27 +1,26 @@
 '''
-This file contains the values of coordinates that are used by the application to estimate and also
-plot the magnetic field reading across Canada. It also contains the coordinates of the site named MEA 
-which is the site with missing values in the holed dataset (i.e its values have to be predicted).
+This file contains the values of coordinates that are used by the application to build the polygon grid.
 
 Source of extreme coordinates: https://en.wikipedia.org/wiki/List_of_extreme_points_of_Canada#All_Canada
 
 Map for reference: http://legallandconverter.com/images/canada_grid.jpg
 '''
 
-# The Western-most longitude passing through Canada
-western_most_longitude = -142.0
+# Coordinates for the west coast polygon grid
+west_coast_grid_western_longitude = -142.0
 
-# The Eastern-most longitude passing through Canada
-eastern_most_longitude = -51.0
+west_coast_grid_eastern_longitude = -122.5
 
-# The Southern-most latitude passing through Canada
-southern_most_latitude = 41.0
+west_coast_grid_southern_latitude = 40.0
 
-# The Northern-most latitude passing through Canada
-northern_most_latitude = 84.0
+west_coast_grid_northern_latitude = 60.0
 
-# The longitude at the magnetometer site MEA (rounded off to the nearest 0.5 degrees longitude)
-mea_longitude = -113.50 
 
-# The lattitude at the magnetometer site MEA (rounded off to the nearest 0.5 degrees lattitude)
-mea_latitude = 54.5
+# Coordinates for the east coast polygon grid
+east_coast_grid_western_longitude = -77.5
+
+east_coast_grid_eastern_longitude = -45.5
+
+east_coast_grid_southern_latitude = 40.0
+
+east_coast_grid_northern_latitude = 66.0
