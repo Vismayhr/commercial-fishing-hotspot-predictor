@@ -80,9 +80,9 @@ class Data():
 		response = {}
 		response['year'] = year
 		response['week'] = week
-		response['data'] = []
+		response['result'] = []
 		for index, row in query_result.iterrows():
-			print(f"Currently serving Polygon: {query_result['polygon_id']}" , flush=True)
+			print(f"Currently serving Polygon: {row['polygon_id']}" , flush=True)
 			data = {}
 			data['lat1'] = row['polygon_south_latitude']
 			data['lon1'] = row['polygon_west_longitude']
@@ -103,11 +103,12 @@ class Data():
 				data['aug'] = 0
 				data['dec'] = 0
 			else:
-				data['value'] = round(self.dataset['vessel_count'])
-				data['jan'] = np.average(self.dataset[(self.dataset['year']==year) & (self.dataset['week'].between(1,4)) & (self.dataset['polygon_id']==row['polygon_id'])]['vessel_count'])
-				data['apr'] = np.average(self.dataset[(self.dataset['year']==year) & (self.dataset['week'].between(13,16)) & (self.dataset['polygon_id']==row['polygon_id'])]['vessel_count'])
-				data['aug'] = np.average(self.dataset[(self.dataset['year']==year) & (self.dataset['week'].between(29,32)) & (self.dataset['polygon_id']==row['polygon_id'])]['vessel_count'])
-				data['dec'] = np.average(self.dataset[(self.dataset['year']==year) & (self.dataset['week'].between(49,53)) & (self.dataset['polygon_id']==row['polygon_id'])]['vessel_count'])
+				data['value'] = round(row['vessel_count'])
+				data['jan'] = round(np.average(self.dataset[(self.dataset['year']==year) & (self.dataset['week'].between(1,4)) & (self.dataset['polygon_id']==row['polygon_id'])]['vessel_count']))
+				data['apr'] = round(np.average(self.dataset[(self.dataset['year']==year) & (self.dataset['week'].between(13,16)) & (self.dataset['polygon_id']==row['polygon_id'])]['vessel_count']))
+				data['aug'] = round(np.average(self.dataset[(self.dataset['year']==year) & (self.dataset['week'].between(29,32)) & (self.dataset['polygon_id']==row['polygon_id'])]['vessel_count']))
+				data['dec'] = round(np.average(self.dataset[(self.dataset['year']==year) & (self.dataset['week'].between(49,53)) & (self.dataset['polygon_id']==row['polygon_id'])]['vessel_count']))
 
-			response['data'].append(data)
+			response['result'].append(data)
+		print(f"ALL POLYGONS DONE!", flush=True)
 		return response
