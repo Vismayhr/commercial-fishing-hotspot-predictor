@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset='UTF-8'>
+	<title>Commercial Fishing Hotspot Predictor</title>
+	<link rel='stylesheet' type='text/css' href='{{ url_for('static',filename='styles/main-page.css') }}'>
+</head>
+	<body>
+		<h1>Predictions</h1>
+		<script type="text/javascript">
+
+			var v1 = {{ data.year | tojson | safe }};
+			var v2 = {{ data.week | tojson | safe }};
+			var v3 = {{ data.result[0]['lat1'] | tojson | safe }};
+			var v4 = {{ data.result[0]['lon1'] | tojson | safe }};
+			var v5 = {{ data.result[0]['predicted_value'] | tojson | safe }};
+			console.log("Year: " +  v1);
+			console.log("Week: " +  v2);
+			console.log("Lat1: " +  v3);
+			console.log("Lon1: " +  v4);
+			console.log("Prediction: " +  v5);
+
+		</script>		
+		<form action="{{ url_for('home') }}" method="post">
+			Year:<br>
+			<input type="text" name="predict_year" id="predict_year"></input><br>
+			Week:<br>
+			<input type="text" name="predict_week" id="predict_week"></input><br>
+			<input type="Submit" name="submitBtn"></input>
+		</form>
+
+
+	</body>
+
+</html>
