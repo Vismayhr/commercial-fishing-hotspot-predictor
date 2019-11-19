@@ -7,18 +7,18 @@ class PolygonGrid():
 
 	def create_polygon_grid(self):
 		## West coast grid box: polygons on to bin the coordinates on the west coast of Canada
-		west_lat_grid = np.linspace(west_coast_grid_southern_latitude, west_coast_grid_northern_latitude, ((west_coast_grid_northern_latitude-west_coast_grid_southern_latitude)*2), endpoint=False)
+		west_lat_grid = np.linspace(west_coast_grid_southern_latitude, west_coast_grid_northern_latitude, ((west_coast_grid_northern_latitude-west_coast_grid_southern_latitude)), endpoint=False)
 
-		west_lon_grid = np.linspace(west_coast_grid_western_longitude, west_coast_grid_eastern_longitude, ((abs(west_coast_grid_western_longitude)-abs(west_coast_grid_eastern_longitude))*2), endpoint=False)
+		west_lon_grid = np.linspace(west_coast_grid_western_longitude, west_coast_grid_eastern_longitude, ((abs(west_coast_grid_western_longitude)-abs(west_coast_grid_eastern_longitude))), endpoint=False)
 		p_id = 0
 		west_polygon_list = []
 		for lat in west_lat_grid:
 		    for lon in west_lon_grid:
 		        polygon = {}
 		        b = lat
-		        t = lat+0.5
+		        t = lat+1.0
 		        l = lon
-		        r = lon+0.5
+		        r = lon+1.0
 		        polygon['polygon_id'] = p_id
 		        polygon['bottom_edge'] = b
 		        polygon['top_edge'] = t
@@ -29,17 +29,17 @@ class PolygonGrid():
 		print(f"West polygon[-1]: {west_polygon_list[-1]}")
 				
 		## East coast grid box: polygons on to bin the coordinates on the east coast of Canada
-		east_lat_grid = np.linspace(east_coast_grid_southern_latitude, east_coast_grid_northern_latitude, ((east_coast_grid_northern_latitude-east_coast_grid_southern_latitude)*2), endpoint=False)
-		east_lon_grid = np.linspace(east_coast_grid_western_longitude, east_coast_grid_eastern_longitude, ((abs(east_coast_grid_western_longitude)-abs(east_coast_grid_eastern_longitude))*2), endpoint=False)
+		east_lat_grid = np.linspace(east_coast_grid_southern_latitude, east_coast_grid_northern_latitude, ((east_coast_grid_northern_latitude-east_coast_grid_southern_latitude)), endpoint=False)
+		east_lon_grid = np.linspace(east_coast_grid_western_longitude, east_coast_grid_eastern_longitude, ((abs(east_coast_grid_western_longitude)-abs(east_coast_grid_eastern_longitude))), endpoint=False)
 
 		east_polygon_list = []
 		for lat in east_lat_grid:
 		    for lon in east_lon_grid:
 		        polygon = {}
 		        b = lat
-		        t = lat+0.5
+		        t = lat+1.0
 		        l = lon
-		        r = lon+0.5
+		        r = lon+1.0
 		        polygon['polygon_id'] = p_id
 		        polygon['bottom_edge'] = b
 		        polygon['top_edge'] = t
