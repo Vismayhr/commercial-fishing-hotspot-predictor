@@ -37,7 +37,7 @@ class Model():
 			result['lon4'] = polygon['left_edge']
 
 			if(polygon['polygon_id'] in data.unvisited_polygons):
-				result['predicted_value'] = 0.0
+				result['predicted_value'] = 0
 			else:
 				entire_row = data.X_test[data.X_test['polygon_id'] == polygon['polygon_id']]
 				query = entire_row[columns_used_for_model_training]
