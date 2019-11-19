@@ -82,6 +82,7 @@ class Data():
 		response['week'] = week
 		response['data'] = []
 		for index, row in query_result.iterrows():
+			print(f"Currently serving index: {index}" , flush=True)
 			data = {}
 			data['lat1'] = row['polygon_south_latitude']
 			data['lon1'] = row['polygon_west_longitude']
