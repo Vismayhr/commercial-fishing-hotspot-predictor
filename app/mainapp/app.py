@@ -3,10 +3,9 @@ from flask_cors import CORS
 import os
 import pandas as pd
 import pickle
-from backend_implementation.filepaths import full_dataset_filepath, trained_model_filepath
 from backend_implementation.data import Data
 from backend_implementation.user_input import UserInput
-
+from backend_implementation.model import Model
 
 # Create global variables used throughout the life of the application
 data = None
@@ -20,15 +19,13 @@ CORS(app)
 @app.before_first_request
 def setup():
 	print(f"Setting up the server....")
-	print(f"Loading the dataset from: {full_dataset_filepath}", flush=True)
 	global data
 	data = Data()
 	print(f"Shape of the dataset is: {data.dataset.shape}", flush=True)
 	
-	print(f"Loading the trained model from: {trained_model_filepath}", flush=True)
 	global trained_model
-	trained_model = pickle.load(open(trained_model_filepath, 'rb'))
-	print("Server setup complete. Server can handle user requests now...", flush=True)
+	trained_model = Model()
+	print("Server setup complete. The server can handle user requests now...", flush=True)
 
 
 @app.route('/init', methods=['GET'])
@@ -50,11 +47,12 @@ def go_home():
 	return redirect(url_for('home'))
 
 @app.route('/fishing-vessel-presence', methods=['POST', 'GET'])
-def home(year='2015', week='1'): 
+def home(year='2015.0', week='1'): 
 	if request.method == 'POST':
 		form_values = request.form.to_dict()
-		year = form_values['year']
-		week = form_values['week']
+		print(f"FORM VALUES ARE: {form_values}", flush=True)
+		year = form_values['predict_year']
+		week = form_values['predict_week']
 		print(f"POST request received. year: {year} and week: {week}", flush=True)
 	else:
 		print(f"GET request received. Using default values: {year} {week}", flush=True)
@@ -65,18 +63,27 @@ def home(year='2015', week='1'):
 	# Update the df with the year and week input by the user
 	data.update_df_with_user_input(user_input)
 
-	print(f"The updated df:\n{data.X_test.head()}", flush=True)
-
+	# Encode X_test as per the steps followed during model training
 	data.perform_feature_encoding()
 
-	print(f"The df after feature encoding:\n{data.X_test.head()}", flush=True)	
+	# Make the predictions
+	predictions = trained_model.make_predictions(data, year, week)
 
+	return render_template('index.html', data=predictions)
 
-	return render_template('index.html')
+@app.route('/visualise_past_data', methods=['POST', 'GET'])
+def visualise_past_data(year='2015.0', week='1'):
 
-@app.route('/handle_input', methods=['POST'])
-def handle_input():
-	pass
+	if request.method == 'POST':
+		form_values = request.form.to_dict()
+		year = form_values['past_year']
+		week = form_values['past_week']
+		print(f"POST request received for PAST DATA. year: {year} and week: {week}", flush=True)	
+	
+	year = float(year)
+	week = float(week)
+	response = data.query_for_past_date(year, week)
+	return render_template('past_visualisation.html', data=response)
 
 # Set host to 0.0.0.0 so that it is accessible from 'outside the container'
 if __name__ == '__main__':
