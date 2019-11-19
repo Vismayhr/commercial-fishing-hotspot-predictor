@@ -12,18 +12,20 @@
 
 			var v1 = {{ data.year | tojson | safe }};
 			var v2 = {{ data.week | tojson | safe }};
-			var v3 = {{ data.result[0]['lat1'] | tojson | safe }};
-			var v4 = {{ data.result[0]['lon1'] | tojson | safe }};
-			var v5 = {{ data.result[0]['value'] | tojson | safe }};
-			var v6 = {{ data.result[0]['jan'] | tojson | safe }};
-			var v7 = {{ data.result[0]['apr'] | tojson | safe }};
+			var v3 = {{ data.result[17]['lat1'] | tojson | safe }};
+			var v4 = {{ data.result[17]['lon1'] | tojson | safe }};
+			var v5 = {{ data.result[17]['value'] | tojson | safe }};
+			var v6 = {{ data.result[17]['jan'] | tojson | safe }};
+			var v7 = {{ data.result[17]['apr'] | tojson | safe }};
+			var v8 = {{ data.result[17]['aug'] | tojson | safe }};
 			console.log("Past Year: " +  v1);
 			console.log("Past Week: " +  v2);
 			console.log("Past Lat1: " +  v3);
 			console.log("Past Lon1: " +  v4);
 			console.log("Past Value: " +  v5);
-			console.log("Past Jan" + v6)
-			console.log("Past Apr" + v7)
+			console.log("Past Jan: " + v6)
+			console.log("Past Apr: " + v7)
+			console.log("Past Aug: " + v8)
 
 		</script>		
 		<form action="{{ url_for('visualise_past_data') }}" method="post">

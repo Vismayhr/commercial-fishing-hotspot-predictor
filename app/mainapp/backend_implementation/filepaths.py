@@ -6,4 +6,8 @@ trained_model_filepath = docker_workspace_root_dir + r"trained_model/trained_fis
 
 unvisited_polygons_data_filepath = docker_workspace_root_dir + r"data/unvisited_polygons.sav"
 
+vessel_count_monthly_averages_filepath = docker_workspace_root_dir + r"data/monthly_averages/"
+
+vessel_count_average_file_extension = "_averages.sav"
+
 logs_filepath = docker_workspace_root_dir + r"logs/"
