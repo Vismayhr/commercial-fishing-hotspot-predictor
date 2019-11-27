@@ -24,17 +24,17 @@ class Model():
 		for polygon in data.polygon_grid.polygons:
 			#print(f"Serving polygon {polygon['polygon_id']}", flush=True)
 			result = {}
-			result['lat1'] = polygon['bottom_edge']
-			result['lon1'] = polygon['left_edge']
+			result['lat1'] = float(polygon['bottom_edge'])
+			result['lon1'] = float(polygon['left_edge'])
 			
-			result['lat2'] = polygon['bottom_edge']
-			result['lon2'] = polygon['right_edge']
+			result['lat2'] = float(polygon['bottom_edge'])
+			result['lon2'] = float(polygon['right_edge'])
 			
-			result['lat3'] = polygon['top_edge']
-			result['lon3'] = polygon['right_edge']
+			result['lat3'] = float(polygon['top_edge'])
+			result['lon3'] = float(polygon['right_edge'])
 
-			result['lat4'] = polygon['top_edge']
-			result['lon4'] = polygon['left_edge']
+			result['lat4'] = float(polygon['top_edge'])
+			result['lon4'] = float(polygon['left_edge'])
 
 			if(polygon['polygon_id'] in data.unvisited_polygons):
 				result['predicted_value'] = 0
@@ -43,7 +43,9 @@ class Model():
 				query = entire_row[columns_used_for_model_training]
 
 				# Make prediction
-				prediction = round(self.model.predict(query)[0])
+				prediction = int(round(self.model.predict(query)[0]))
+				if (prediction < 0):
+					prediction *= -1
 				result['predicted_value'] = prediction
 
 			self.predictions['result'].append(result)
