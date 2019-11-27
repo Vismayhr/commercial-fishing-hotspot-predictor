@@ -9,7 +9,8 @@ import Swal from 'sweetalert2';
 *  @description :: Common service to send any AJAX requests.
 */
 
-const apiURL = 'http://192.168.99.100:1330';
+/*const apiURL = 'http://192.168.99.100:1330';*/
+const apiURL = 'http://127.0.0.1:1331';
 
 var httpOptions = {
   headers: new HttpHeaders({ 'enctype': 'multipart/form-data' })
