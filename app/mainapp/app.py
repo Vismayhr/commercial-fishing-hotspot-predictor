@@ -69,7 +69,10 @@ def home(year='2016.0', week='35'):
 	# Make the predictions
 	predictions = trained_model.make_predictions(data, year, week)
 
-	return render_template('predictions.html', data=predictions)
+	if request.method == 'POST':
+		return jsonify(predictions)
+	else:
+	    return render_template('predictions.html', data=predictions)
 
 @app.route('/visualise_past_data', methods=['POST', 'GET'])
 @cross_origin()
