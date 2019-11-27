@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import logging
 import pandas as pd
-from .filepaths import full_dataset_filepath, unvisited_polygons_data_filepath
+from .filepaths import *
 from .canadas_coordinates import *
 from .dataset_meta_data import *
 from .polygon_grid import PolygonGrid
@@ -76,38 +76,48 @@ class Data():
 
 	def query_for_past_date(self, year, week):
 		query_result = self.dataset[(self.dataset['year']==year) & (self.dataset['week']==week)]
+		filepath = vessel_count_monthly_averages_filepath + str(year) + vessel_count_average_file_extension
+		vessel_count_monthly_averages = pickle.load(open(filepath, 'rb'))
 		response = {}
 		response['year'] = year
 		response['week'] = week
 		response['result'] = []
 		start_time = datetime.datetime.now()
+		ind = 0
 		print(f"Querying data for each polygon on the map...", flush=True)
-		for index, row in query_result.iterrows():
+		for polygon in self.polygon_grid.polygons:
 			data = {}
-			data['lat1'] = row['polygon_south_latitude']
-			data['lon1'] = row['polygon_west_longitude']
+			data['lat1'] = float(polygon['bottom_edge'])
+			print(f"data[lat1] is of type {type(data['lat1'])}",flush=True)
+			data['lon1'] = float(polygon['left_edge'])
 
-			data['lat2'] = row['polygon_south_latitude']
-			data['lon2'] = row['polygon_west_longitude'] + 1.0
+			data['lat2'] = float(polygon['bottom_edge'])
+			data['lon2'] = float(polygon['right_edge'])
 
-			data['lat3'] = row['polygon_south_latitude'] + 1.0
-			data['lon3'] = row['polygon_west_longitude'] + 1.0
+			data['lat3'] = float(polygon['top_edge'])
+			data['lon3'] = float(polygon['right_edge'])
 
-			data['lat4'] = row['polygon_south_latitude'] + 1.0
-			data['lon4'] = row['polygon_west_longitude']
+			data['lat4'] = float(polygon['top_edge'])
+			data['lon4'] = float(polygon['left_edge'])
 
-			if(row['polygon_id'] in self.unvisited_polygons):
+			if (polygon['polygon_id'] in self.unvisited_polygons):
 				data['value'] = 0
 				data['jan'] = 0
 				data['apr'] = 0
 				data['aug'] = 0
 				data['dec'] = 0
 			else:
-				data['value'] = round(row['vessel_count'])
-				data['jan'] = round(np.average(self.dataset[(self.dataset['year']==year) & (self.dataset['week'].between(1,4)) & (self.dataset['polygon_id']==row['polygon_id'])]['vessel_count']))
-				data['apr'] = round(np.average(self.dataset[(self.dataset['year']==year) & (self.dataset['week'].between(13,16)) & (self.dataset['polygon_id']==row['polygon_id'])]['vessel_count']))
-				data['aug'] = round(np.average(self.dataset[(self.dataset['year']==year) & (self.dataset['week'].between(29,32)) & (self.dataset['polygon_id']==row['polygon_id'])]['vessel_count']))
-				data['dec'] = round(np.average(self.dataset[(self.dataset['year']==year) & (self.dataset['week'].between(49,53)) & (self.dataset['polygon_id']==row['polygon_id'])]['vessel_count']))
+				row = query_result[query_result['polygon_id']==polygon['polygon_id']]
+				data['value'] = int(round(row['vessel_count']))
+				id = polygon['polygon_id']
+				data['jan'] = int(vessel_count_monthly_averages[id]['jan'])
+				data['apr'] = int(vessel_count_monthly_averages[id]['apr'])
+				data['aug'] = int(vessel_count_monthly_averages[id]['aug'])
+				data['dec'] = int(vessel_count_monthly_averages[id]['dec'])
+			print(f"index: {ind}", flush=True)
+			if(polygon['polygon_id']==17):
+				print(f"THE VALUES FOR P_ID 17 ARE: {data['jan'], data['apr'], data['aug'], data['dec']}")	
+			ind += 1		
 
 			response['result'].append(data)
 		end_time = datetime.datetime.now()
