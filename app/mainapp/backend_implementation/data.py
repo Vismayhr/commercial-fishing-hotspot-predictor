@@ -82,8 +82,8 @@ class Data():
 		response['year'] = year
 		response['week'] = week
 		response['result'] = []
+		all_months = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec']
 		start_time = datetime.datetime.now()
-		ind = 0
 		print(f"Querying data for each polygon on the map...", flush=True)
 		for polygon in self.polygon_grid.polygons:
 			data = {}
@@ -102,22 +102,14 @@ class Data():
 
 			if (polygon['polygon_id'] in self.unvisited_polygons):
 				data['value'] = 0
-				data['jan'] = 0
-				data['apr'] = 0
-				data['aug'] = 0
-				data['dec'] = 0
+				for m in all_months:
+					data[m] = 0
 			else:
 				row = query_result[query_result['polygon_id']==polygon['polygon_id']]
 				data['value'] = int(round(row['vessel_count']))
 				id = polygon['polygon_id']
-				data['jan'] = int(vessel_count_monthly_averages[id]['jan'])
-				data['apr'] = int(vessel_count_monthly_averages[id]['apr'])
-				data['aug'] = int(vessel_count_monthly_averages[id]['aug'])
-				data['dec'] = int(vessel_count_monthly_averages[id]['dec'])
-			print(f"index: {ind}", flush=True)
-			if(polygon['polygon_id']==17):
-				print(f"THE VALUES FOR P_ID 17 ARE: {data['jan'], data['apr'], data['aug'], data['dec']}")	
-			ind += 1		
+				for m in all_months:
+					data[m] = int(vessel_count_monthly_averages[id][m])
 
 			response['result'].append(data)
 		end_time = datetime.datetime.now()
