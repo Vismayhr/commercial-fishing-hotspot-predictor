@@ -1,0 +1,33 @@
+<div class="top-band">
+  <nav class="navbar navbar-expand-lg navbar-light justify-content-center">
+     <div class="collapse navbar-collapse" id="navbarSupportedContent">
+       <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" routerLink="/past">Past Trends <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/prediction">Prediction</a>
+      </li>
+    </ul>
+    <form class="form-inline">
+      <div class="form-group mx-sm-3 mb-2 flex-column align-items-start">
+        <input id="date" type="week" class="form-control"  name="week" value="2012-W01" min="2012-W01" max="2016-W34">
+      </div>
+      <button (click)="submitQuery($event);" class="btn btn-primary mb-2">Go</button>
+    </form>
+    </div>
+  </nav>
+
+</div>
+
+<div class="wrapper">
+  <div id="mapid"></div>
+  <div id="scroll-to"></div>
+  <div *ngIf="showLineChart" class="line-card">
+    <h5 class="title text-primary">Monthly trend&nbsp;&nbsp;<i class="fas fa-question-circle"></i></h5>
+    <div class="help-text text-muted">Selected Density: {{selectedDensity}}</div>
+    <div class="card-body d-flex justify-content-center">
+      <app-line-chart [lineResponse]="lineTrend"></app-line-chart>
+    </div>
+  </div>
+</div>

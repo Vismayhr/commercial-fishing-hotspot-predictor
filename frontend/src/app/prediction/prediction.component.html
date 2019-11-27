@@ -1,0 +1,25 @@
+<div class="top-band">
+  <nav class="navbar navbar-expand-lg navbar-light justify-content-center">
+     <div class="collapse navbar-collapse" id="navbarSupportedContent">
+       <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/past">Past Trends</a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" routerLink="/prediction">Prediction<span class="sr-only">(current)</span></a>
+      </li>
+    </ul>
+    <form class="form-inline">
+      <div class="form-group mx-sm-3 mb-2 flex-column align-items-start">
+        <input id="date" type="week" class="form-control"  name="week" value="2016-W35" min="2016-W35" max="2017-W20">
+      </div>
+      <button (click)="submitQuery($event);" class="btn btn-primary mb-2">Go</button>
+    </form>
+    </div>
+  </nav>
+
+</div>
+
+<div class="wrapper">
+  <div id="mapid"></div>
+</div>
