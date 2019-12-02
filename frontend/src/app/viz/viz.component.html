@@ -24,8 +24,9 @@
   <div id="mapid"></div>
   <div id="scroll-to"></div>
   <div *ngIf="showLineChart" class="line-card">
-    <h5 class="title text-primary">Monthly trend&nbsp;&nbsp;<i class="fas fa-question-circle"></i></h5>
-    <div class="help-text text-muted">Selected Density: {{selectedDensity}}</div>
+    <h5 class="title text-primary mb-3">Monthly trend&nbsp;&nbsp;<i class="fas fa-question-circle"></i></h5>
+    <div class="help-text text-muted mb-1">Geo Coordinates: {{selectedCoords}}</div>
+    <div class="help-text text-muted">Average Density: {{selectedDensity}}</div>
     <div class="card-body d-flex justify-content-center">
       <app-line-chart [lineResponse]="lineTrend"></app-line-chart>
     </div>

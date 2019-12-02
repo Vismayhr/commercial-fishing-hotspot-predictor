@@ -22,6 +22,7 @@ export class VizComponent implements OnInit {
   medianPer: number;
   lineTrend: any;
   selectedDensity: any;
+  selectedCoords: any;
   showLineChart = false;
   max = 0;
 
@@ -167,6 +168,11 @@ export class VizComponent implements OnInit {
           mouseover: ((e) => {
             var layer = e.target;
 
+            var popup = L.popup()
+              .setLatLng(e.latlng)
+              .setContent('<p>Coordinates:' + e.latlng + '</p><p>Density: ' + feature.properties.density + '</p>')
+              .openOn(map);
+
             layer.setStyle({
               weight: 2,
               fillOpacity: 1
@@ -182,6 +188,7 @@ export class VizComponent implements OnInit {
           click: ((e) => {
             this.showLineChart = false;
             this.selectedDensity = feature.properties.density;
+            this.selectedCoords = e.latlng;
             this.lineTrend = feature.montlyTrend;
 
             setTimeout(() => {

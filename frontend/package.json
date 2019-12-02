@@ -30,7 +30,7 @@
     "canvasjs": "^1.8.1",
     "chart.js": "^2.9.3",
     "jquery": "^3.4.1",
-    "path": "^0.12.7",
+     "path": "^0.12.7",
     "leaflet-choropleth": "^1.1.4",
     "rxjs": "~6.3.3",
     "sweetalert2": "^9.3.16",
